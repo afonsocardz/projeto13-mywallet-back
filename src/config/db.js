@@ -9,9 +9,11 @@ const client = new MongoClient(DB_URI);
 export async function startDatabase() {
     try {
         let db;
-        await client.connect();
-        db = client.db("mywallet");
-        return { db, client };
+        const response = await client.connect();
+        if(response) {
+            db = client.db("mywallet");
+            return { db, client };
+        } 
     } catch (err) {
         console.log(err);
     };
