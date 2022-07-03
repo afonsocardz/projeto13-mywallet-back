@@ -4,6 +4,9 @@ export const Wallet = Joi.object({
     type: Joi.string()
         .required(),
 
+    description: Joi.string()
+        .required(),
+
     amount: Joi.number()
         .required(),
 
