@@ -1,9 +1,9 @@
 import { db } from "../databases/mongo.js";
 
 export default async function checkAuth(req, res, next) {
-    const { authorization } = req.headers;
+    const { authorization, user } = req.headers;
     const token = authorization?.replace("Bearer ", "");
-    if (!token) return res.status(401).send("Acesso negado!");
+    if (!user || !token ) return res.status(401).send("Acesso negado!");
     try {
         const session = await db.collection("sessions").findOne({ token });
         if (!session) {
@@ -13,5 +13,6 @@ export default async function checkAuth(req, res, next) {
         }
     } catch (err) {
         console.log(err);
+        res.status(500).send("checkAuth: \n" + err);
     }
 }

@@ -17,6 +17,7 @@ async function login(req, res) {
         }
     } catch (err) {
         console.log(err);
+        res.status(500).send("login: \n" + err);
     }
 };
 
@@ -29,7 +30,7 @@ async function signup(req, res) {
             res.status(422).send({ msg: "Usuário já foi cadastrado" });
         } else {
             const userObj = { name, email, password: passwordHash }
-            const { value, error } = User.validateAsync(userObj);
+            const { value, error } = User.validate(userObj);
             if (error) {
                 res.status(422).send(error);
             } else {
@@ -39,6 +40,7 @@ async function signup(req, res) {
         }
     } catch (err) {
         console.log(err);
+        res.status(500).send("signup: \n" + err);
     }
 
 };
@@ -51,6 +53,7 @@ async function logout(req, res) {
         if(response) res.status(200).send("usuário fez logout!");
     } catch (err) {
         console.log(err);
+        res.status(500).send("logout: \n" + err);
     }
 }
 
