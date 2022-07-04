@@ -27,6 +27,7 @@ async function postWallet(req, res) {
         if (error) {
             res.status(422).send(error.details);
         } else {
+            value.amount = value.type === "outcome" ? value.amount * -1 : value.amount;
             const response = await db.collection("wallets").insertOne(value);
             response && res.status(201).send({ msg: "Registrado com sucesso!" })
         }

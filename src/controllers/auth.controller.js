@@ -11,7 +11,7 @@ async function login(req, res) {
             const token = uuid();
             const tokenObj = { userId: user._id, token, timestamp: Date.now() }
             await db.collection("sessions").insertOne(tokenObj);
-            res.status(200).send({ token });
+            res.status(200).send({ token, user: { name: user.name, email: user.email } });
         } else {
             res.status(401).send({ msg: "Senha ou e-mail incorreto!" });
         }
@@ -50,7 +50,7 @@ async function logout(req, res) {
     const token = authorization?.replace("Bearer ", "");
     try {
         const response = await db.collection("sessions").deleteOne({ token });
-        if(response) res.status(200).send("usuário fez logout!");
+        if (response) res.status(200).send("usuário fez logout!");
     } catch (err) {
         console.log(err);
         res.status(500).send("logout: \n" + err);
